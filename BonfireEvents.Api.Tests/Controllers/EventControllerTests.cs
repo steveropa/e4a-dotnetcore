@@ -9,7 +9,8 @@ namespace BonfireEvents.Api.Tests.Controllers
         public void Get_returns_hello_world()
         {
             var subject = new EventController();
-            Assert.Equal("Hello World", actual: subject.Get());
+            var result = subject.Get();
+            Assert.Equal("Hello World", actual: result);
         }
     }
 }
