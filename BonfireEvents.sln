@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonfireEvents.Api", "BonfireEvents.Api\BonfireEvents.Api.csproj", "{9FFFA694-5783-4762-8070-672666F82C21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonfireEvents.Api.Tests", "BonfireEvents.Api.Tests\BonfireEvents.Api.Tests.csproj", "{DA964B27-46D3-44A7-A525-D31FE639A11A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9FFFA694-5783-4762-8070-672666F82C21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FFFA694-5783-4762-8070-672666F82C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FFFA694-5783-4762-8070-672666F82C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FFFA694-5783-4762-8070-672666F82C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA964B27-46D3-44A7-A525-D31FE639A11A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA964B27-46D3-44A7-A525-D31FE639A11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA964B27-46D3-44A7-A525-D31FE639A11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA964B27-46D3-44A7-A525-D31FE639A11A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
