@@ -1,0 +1,1 @@
+# Engineering for Agility - .NET Core Edition
