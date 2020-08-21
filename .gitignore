@@ -14,3 +14,5 @@ obj/
 /.idea/httpRequests/http-requests-log.http
 
 /httpRequests
+
+.idea/
