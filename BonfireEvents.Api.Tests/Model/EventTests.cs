@@ -27,13 +27,19 @@ namespace BonfireEvents.Api.Tests.Model
       
       Assert.Equal("Monthly meet-up for enthusiasts.", subject.Description);
     }
+
+    [Fact]
+    public void Description_is_required()
+    {
+      Assert.Throws<CreateEventException>(() => new Event(title: "My C# Event", description: null));
+    }
   }
 
   public class Event
   {
     public Event(string title, string description)
     {
-      if (string.IsNullOrEmpty(title)) throw new CreateEventException();
+      if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description)) throw new CreateEventException();
       Title = title;
       Description = description;
     }
