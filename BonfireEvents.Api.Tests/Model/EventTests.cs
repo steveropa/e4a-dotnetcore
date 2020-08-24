@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Xunit;
 
@@ -12,17 +13,26 @@ namespace BonfireEvents.Api.Tests.Model
       
       Assert.Equal("My C# Event", subject.Title);
     }
-
-    public string Title { get; }
+    
+    [Fact]
+    public void Title_is_required()
+    {
+      Assert.Throws<CreateEventException>(() => new Event(title: null));
+    }
   }
 
   public class Event
   {
     public Event(string title)
     {
+      if (string.IsNullOrEmpty(title)) throw new CreateEventException();
       Title = title;
     }
 
     public string Title { get; }
+  }
+
+  public class CreateEventException : Exception
+  {
   }
 }
