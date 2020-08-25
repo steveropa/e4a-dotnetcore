@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Routing.Matching;
 using Xunit;
 
 namespace BonfireEvents.Api.Tests.Model
@@ -43,6 +44,36 @@ namespace BonfireEvents.Api.Tests.Model
       Assert.Contains("Title is required", ex.ValidationErrors);
       Assert.Contains("Description is required", ex.ValidationErrors);
     }
+
+    [Fact]
+    public void Events_have_a_start_and_end_date()
+    {
+      var subject = new Event("Meetup", description: "Periodic meeting");
+      var starts = DateTime.Now.AddDays(1);
+      var ends = starts.AddHours(2);
+      
+      subject.ScheduleEvent(starts: starts, ends: ends);
+      
+      Assert.Equal(starts, subject.Starts);
+      Assert.Equal(ends, subject.Ends);
+    }
+
+    [Fact]
+    public void Event_start_date_must_be_earlier_than_end_date()
+    {
+      var subject = new Event("Meetup", description: "Periodic meeting");
+      var starts = DateTime.Now.AddDays(1);
+      var ends = starts.AddDays(-1);
+      
+      Assert.Throws<InvalidSchedulingDatesException>(() =>
+      {
+        subject.ScheduleEvent(starts: starts, ends: ends);
+      });
+    }
+  }
+
+  public class InvalidSchedulingDatesException : Exception
+  {
   }
 
   public class Event
@@ -53,6 +84,19 @@ namespace BonfireEvents.Api.Tests.Model
 
       Title = title;
       Description = description;
+    }
+
+    public string Title { get; }
+    public string Description { get; }
+    public DateTime Starts { get; private set; }
+    public DateTime Ends { get; private set; }
+
+    public void ScheduleEvent(DateTime starts, DateTime ends)
+    {
+      if (starts > ends) throw new InvalidSchedulingDatesException();
+      
+      Starts = starts;
+      Ends = ends;
     }
 
     private static void ValidateEventData(string title, string description)
@@ -69,9 +113,6 @@ namespace BonfireEvents.Api.Tests.Model
         throw ex;
       }
     }
-
-    public string Title { get; }
-    public string Description { get; }
   }
 
   public class CreateEventException : Exception
