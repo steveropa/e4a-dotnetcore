@@ -15,7 +15,7 @@ namespace BonfireEvents.Api.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet(template:"{id}")]
         public EventViewModel Get(int id)
         {
             Event theEvent = _repository.Find(id);
