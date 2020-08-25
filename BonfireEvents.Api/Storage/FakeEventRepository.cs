@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using BonfireEvents.Api.Model;
+using BonfireEvents.Api.Domain;
 
 namespace BonfireEvents.Api.Storage
 {

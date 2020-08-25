@@ -1,5 +1,6 @@
+using System.Threading.Tasks;
 using BonfireEvents.Api.Controllers;
-using BonfireEvents.Api.Model;
+using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.ViewModels;
 using NSubstitute;
 using Xunit;
@@ -28,10 +29,28 @@ namespace BonfireEvents.Api.Tests.Controllers
 
             var subject = new EventController(repository);
             
-            EventViewModel viewModel = subject.Get(1);
+            EventViewModel viewModel = subject.Get(1).Value;
             
             Assert.Equal(theEvent.Title, viewModel.Title);
             Assert.Equal(theEvent.Description, viewModel.Description);
+        }
+
+        [Fact]
+        public async Task Test_async()
+        {
+            var foo = new AsyncClass();
+
+            var result = await foo.Multiply(5);
+            
+            Assert.Equal(25, result);
+        }
+    }
+
+    public class AsyncClass
+    {
+        public async Task<int> Multiply(int i)
+        {
+            return await Task.Run(() => i*i);
         }
     }
 }

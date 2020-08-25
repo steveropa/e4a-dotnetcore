@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BonfireEvents.Api.Exceptions;
 
-namespace BonfireEvents.Api.Model
+namespace BonfireEvents.Api.Domain
 {
   public class Event
   {

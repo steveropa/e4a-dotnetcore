@@ -1,4 +1,4 @@
-namespace BonfireEvents.Api.Model
+namespace BonfireEvents.Api.Domain
 {
   public static class EventStates
   {

@@ -1,9 +1,9 @@
 using System;
+using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Exceptions;
-using BonfireEvents.Api.Model;
 using Xunit;
 
-namespace BonfireEvents.Api.Tests.Model
+namespace BonfireEvents.Api.Tests.Domain
 {
   public class EventTests
   {
