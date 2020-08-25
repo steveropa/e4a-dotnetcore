@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace BonfireEvents.Api.Tests.Model
@@ -33,13 +34,33 @@ namespace BonfireEvents.Api.Tests.Model
     {
       Assert.Throws<CreateEventException>(() => new Event(title: "My C# Event", description: null));
     }
+
+    [Fact]
+    public void Title_and_description_are_validated_together()
+    {
+      var ex = Assert.Throws<CreateEventException>(() => new Event(title: null, description: null));
+      
+      Assert.Contains("Title is required", ex.ValidationErrors);
+      Assert.Contains("Description is required", ex.ValidationErrors);
+    }
   }
 
   public class Event
   {
     public Event(string title, string description)
     {
-      if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(description)) throw new CreateEventException();
+      var errors = new List<string>();
+      
+      if (string.IsNullOrEmpty(title)) errors.Add("Title is required");
+      if (string.IsNullOrEmpty(description)) errors.Add("Description is required");
+
+      if (errors.Any())
+      {
+        var ex = new CreateEventException();
+        ex.ValidationErrors.AddRange(errors);
+        throw ex;
+      }
+      
       Title = title;
       Description = description;
     }
@@ -50,5 +71,11 @@ namespace BonfireEvents.Api.Tests.Model
 
   public class CreateEventException : Exception
   {
+    public CreateEventException()
+    {
+      this.ValidationErrors = new List<string>();
+    }
+    
+    public List<string> ValidationErrors { get; }
   }
 }
