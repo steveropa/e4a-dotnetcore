@@ -47,7 +47,7 @@ namespace BonfireEvents.Api.Tests.Model
     [Fact]
     public void Events_have_a_start_and_end_date()
     {
-      var subject = new Event("Meetup", description: "Periodic meeting");
+      var subject = CreateDraftEvent();
       var starts = DateTime.Now.AddDays(1);
       var ends = starts.AddHours(2);
       
@@ -60,7 +60,7 @@ namespace BonfireEvents.Api.Tests.Model
     [Fact]
     public void Event_start_date_must_be_earlier_than_end_date()
     {
-      var subject = new Event("Meetup", description: "Periodic meeting");
+      var subject = CreateDraftEvent();
       var starts = DateTime.Now.AddDays(1);
       var ends = starts.AddDays(-1);
       
@@ -73,11 +73,27 @@ namespace BonfireEvents.Api.Tests.Model
     [Fact]
     public void Event_start_must_be_in_future()
     {
-      var subject = new Event("Title", "Desc");
+      var subject = CreateDraftEvent();
 
       DateTime Now() => DateTime.Now.AddDays(-2);
 
       subject.ScheduleEvent(DateTime.Now, DateTime.Now.AddHours(1), Now);
+    }
+
+    [Fact]
+    public void New_events_have_a_draft_status()
+    {
+      var subject = CreateDraftEvent();
+      Assert.Equal(EventStates.Draft, subject.Status);
+    }
+
+    /// <summary>
+    /// Factory / Object Mother that eases creation of a draft event.
+    /// </summary>
+    /// <returns>An event in a draft state.</returns>
+    private Event CreateDraftEvent()
+    {
+      return new Event("My Event", "Periodic gathering of like-minded folk.");
     }
   }
 }

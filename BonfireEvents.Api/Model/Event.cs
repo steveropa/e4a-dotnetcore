@@ -19,6 +19,7 @@ namespace BonfireEvents.Api.Model
     public string Description { get; }
     public DateTime Starts { get; private set; }
     public DateTime Ends { get; private set; }
+    public string Status => EventStates.Draft;
 
     public void ScheduleEvent(DateTime starts, DateTime ends, Func<DateTime> now)
     {
