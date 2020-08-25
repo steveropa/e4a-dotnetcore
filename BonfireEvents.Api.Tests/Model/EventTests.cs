@@ -49,8 +49,16 @@ namespace BonfireEvents.Api.Tests.Model
   {
     public Event(string title, string description)
     {
+      ValidateEventData(title, description);
+
+      Title = title;
+      Description = description;
+    }
+
+    private static void ValidateEventData(string title, string description)
+    {
       var errors = new List<string>();
-      
+
       if (string.IsNullOrEmpty(title)) errors.Add("Title is required");
       if (string.IsNullOrEmpty(description)) errors.Add("Description is required");
 
@@ -60,9 +68,6 @@ namespace BonfireEvents.Api.Tests.Model
         ex.ValidationErrors.AddRange(errors);
         throw ex;
       }
-      
-      Title = title;
-      Description = description;
     }
 
     public string Title { get; }
