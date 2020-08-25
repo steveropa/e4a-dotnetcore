@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Routing.Matching;
 using Xunit;
 
 namespace BonfireEvents.Api.Tests.Model
@@ -52,7 +51,7 @@ namespace BonfireEvents.Api.Tests.Model
       var starts = DateTime.Now.AddDays(1);
       var ends = starts.AddHours(2);
       
-      subject.ScheduleEvent(starts: starts, ends: ends);
+      subject.ScheduleEvent(starts: starts, ends: ends, ()=> DateTime.Now);
       
       Assert.Equal(starts, subject.Starts);
       Assert.Equal(ends, subject.Ends);
@@ -67,13 +66,19 @@ namespace BonfireEvents.Api.Tests.Model
       
       Assert.Throws<InvalidSchedulingDatesException>(() =>
       {
-        subject.ScheduleEvent(starts: starts, ends: ends);
+        subject.ScheduleEvent(starts: starts, ends: ends, ()=> DateTime.Now);
       });
     }
-  }
 
-  public class InvalidSchedulingDatesException : Exception
-  {
+    [Fact]
+    public void Event_start_must_be_in_future()
+    {
+      var subject = new Event("Title", "Desc");
+
+      DateTime Now() => DateTime.Now.AddDays(-2);
+
+      subject.ScheduleEvent(DateTime.Now, DateTime.Now.AddHours(1), Now);
+    }
   }
 
   public class Event
@@ -91,8 +96,9 @@ namespace BonfireEvents.Api.Tests.Model
     public DateTime Starts { get; private set; }
     public DateTime Ends { get; private set; }
 
-    public void ScheduleEvent(DateTime starts, DateTime ends)
+    public void ScheduleEvent(DateTime starts, DateTime ends, Func<DateTime> now)
     {
+      if (starts < now()) throw new InvalidSchedulingDatesException();
       if (starts > ends) throw new InvalidSchedulingDatesException();
       
       Starts = starts;
@@ -113,6 +119,10 @@ namespace BonfireEvents.Api.Tests.Model
         throw ex;
       }
     }
+  }
+
+  public class InvalidSchedulingDatesException : Exception
+  {
   }
 
   public class CreateEventException : Exception
