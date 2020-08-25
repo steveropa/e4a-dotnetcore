@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BonfireEvents.Api.Controllers
 {
     [ApiController]
+    [Route("event")]
     public class EventController : ControllerBase
     {
         private readonly IEventRepository _repository;
@@ -15,7 +16,6 @@ namespace BonfireEvents.Api.Controllers
         }
 
         [HttpGet]
-        [Route("event/{id}")]
         public EventViewModel Get(int id)
         {
             Event theEvent = _repository.Find(id);
