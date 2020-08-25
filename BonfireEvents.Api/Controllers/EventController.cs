@@ -1,16 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BonfireEvents.Api.Model;
+using BonfireEvents.Api.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BonfireEvents.Api.Controllers
 {
     [ApiController]
-    [Route("event")]
     public class EventController : ControllerBase
     {
-        
-        [HttpGet]
-        public string Get()
+        private readonly IEventRepository _repository;
+
+        public EventController(IEventRepository repository)
         {
-            return "Hello World";
+            _repository = repository;
+        }
+
+        [HttpGet]
+        [Route("event/{id}")]
+        public EventViewModel Get(int id)
+        {
+            Event theEvent = _repository.Find(id);
+            
+            return new EventViewModel()
+            {
+                Title = theEvent.Title,
+                Description = theEvent.Description
+            };
         }
         
     }
