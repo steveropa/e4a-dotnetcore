@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using BonfireEvents.Api.Exceptions;
+using BonfireEvents.Api.Model;
 using Xunit;
 
 namespace BonfireEvents.Api.Tests.Model
@@ -79,59 +79,5 @@ namespace BonfireEvents.Api.Tests.Model
 
       subject.ScheduleEvent(DateTime.Now, DateTime.Now.AddHours(1), Now);
     }
-  }
-
-  public class Event
-  {
-    public Event(string title, string description)
-    {
-      ValidateEventData(title, description);
-
-      Title = title;
-      Description = description;
-    }
-
-    public string Title { get; }
-    public string Description { get; }
-    public DateTime Starts { get; private set; }
-    public DateTime Ends { get; private set; }
-
-    public void ScheduleEvent(DateTime starts, DateTime ends, Func<DateTime> now)
-    {
-      if (starts < now()) throw new InvalidSchedulingDatesException();
-      if (starts > ends) throw new InvalidSchedulingDatesException();
-      
-      Starts = starts;
-      Ends = ends;
-    }
-
-    private static void ValidateEventData(string title, string description)
-    {
-      var errors = new List<string>();
-
-      if (string.IsNullOrEmpty(title)) errors.Add("Title is required");
-      if (string.IsNullOrEmpty(description)) errors.Add("Description is required");
-
-      if (errors.Any())
-      {
-        var ex = new CreateEventException();
-        ex.ValidationErrors.AddRange(errors);
-        throw ex;
-      }
-    }
-  }
-
-  public class InvalidSchedulingDatesException : Exception
-  {
-  }
-
-  public class CreateEventException : Exception
-  {
-    public CreateEventException()
-    {
-      this.ValidationErrors = new List<string>();
-    }
-    
-    public List<string> ValidationErrors { get; }
   }
 }
