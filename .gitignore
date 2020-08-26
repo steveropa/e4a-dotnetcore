@@ -20,3 +20,6 @@ obj/
 .vs/
 BonfireEvents.sln.DotSettings.user
 BonfireEvents.sln.DotSettings.user
+/.vs/BonfireEvents/xs/project-cache/BonfireEvents.Api.Tests-Debug.json
+/.vs/BonfireEvents/xs/project-cache/BonfireEvents.Api-Debug.json
+/.vs/BonfireEvents/xs/UserPrefs.xml
