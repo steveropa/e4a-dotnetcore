@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BonfireEvents.Api.Domain;
 
@@ -13,6 +14,11 @@ namespace BonfireEvents.Api.Storage
     public Event Find(int id)
     {
       return new Event("Fake", "Fake");
+    }
+
+    public int Save(Event anEvent)
+    {
+      throw new System.NotImplementedException();
     }
   }
 }

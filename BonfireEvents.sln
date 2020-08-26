@@ -1,8 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonfireEvents.Api", "BonfireEvents.Api\BonfireEvents.Api.csproj", "{9FFFA694-5783-4762-8070-672666F82C21}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonfireEvents.Api.Tests", "BonfireEvents.Api.Tests\BonfireEvents.Api.Tests.csproj", "{DA964B27-46D3-44A7-A525-D31FE639A11A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{859FA27F-54CA-450D-8FB9-CF00A6141BE2}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
