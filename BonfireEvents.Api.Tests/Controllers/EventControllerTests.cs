@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using BonfireEvents.Api.Controllers;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.ViewModels;
@@ -34,23 +33,6 @@ namespace BonfireEvents.Api.Tests.Controllers
             Assert.Equal(theEvent.Title, viewModel.Title);
             Assert.Equal(theEvent.Description, viewModel.Description);
         }
-
-        [Fact]
-        public async Task Test_async()
-        {
-            var foo = new AsyncClass();
-
-            var result = await foo.Multiply(5);
-            
-            Assert.Equal(25, result);
-        }
     }
 
-    public class AsyncClass
-    {
-        public async Task<int> Multiply(int i)
-        {
-            return await Task.Run(() => i*i);
-        }
-    }
 }
