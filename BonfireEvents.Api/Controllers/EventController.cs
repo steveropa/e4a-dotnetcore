@@ -19,17 +19,17 @@ namespace BonfireEvents.Api.Controllers
     }
 
     [HttpGet(template: "{id}")]
-    public ActionResult<EventViewModel> Get(int id)
+    public ActionResult<EventDetailModel> Get(int id)
     {
       Event theEvent = _repository.Find(id);
 
-      var mappedModel = new EventViewModel()
+      var mappedModel = new EventDetailModel()
       {
         Title = theEvent.Title,
         Description = theEvent.Description
       };
 
-      return new ActionResult<EventViewModel>(mappedModel);
+      return new ActionResult<EventDetailModel>(mappedModel);
     }
 
     [HttpPost]

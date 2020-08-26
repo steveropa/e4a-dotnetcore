@@ -30,10 +30,10 @@ namespace BonfireEvents.Api.Tests.Controllers
 
       var subject = new EventController(repository);
 
-      EventViewModel viewModel = subject.Get(1).Value;
+      EventDetailModel detailModel = subject.Get(1).Value;
 
-      Assert.Equal(theEvent.Title, viewModel.Title);
-      Assert.Equal(theEvent.Description, viewModel.Description);
+      Assert.Equal(theEvent.Title, detailModel.Title);
+      Assert.Equal(theEvent.Description, detailModel.Description);
     }
 
     [Fact]
