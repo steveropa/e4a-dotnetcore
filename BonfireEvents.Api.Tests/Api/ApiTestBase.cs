@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
@@ -36,6 +37,7 @@ namespace BonfireEvents.Api.Tests.Api
     ~ApiTestBase()
     {
       Client.Dispose();
+      _host.StopAsync(TimeSpan.Zero);
       _host.Dispose();  
     }
   }
