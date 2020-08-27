@@ -1,3 +1,4 @@
+using System;
 using BonfireEvents.Api.Controllers;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Models;
@@ -30,10 +31,8 @@ namespace BonfireEvents.Api.Tests.Controllers
 
       var subject = new EventController(repository);
 
-      EventDetailModel detailModel = subject.Get(1).Value;
-
-      Assert.Equal(theEvent.Title, detailModel.Title);
-      Assert.Equal(theEvent.Description, detailModel.Description);
+      var result = subject.Get(1);
+      Assert.Equal("My Event", result.Value.Title);
     }
 
     [Fact]
@@ -43,10 +42,12 @@ namespace BonfireEvents.Api.Tests.Controllers
       repository.Save(Arg.Any<Event>()).Returns(99);
       var subject = new EventController(repository);
 
-      ActionResult<int> eventId = subject.Post(new CreateEventModel
+      var result = subject.Post(new CreateEventModel
         {Title = "My Event", Description = "A description."});
 
-      Assert.Equal(99, eventId.Value);
+      var createdResult = Assert.IsType<CreatedResult>(result);
+      
+      Assert.Equal("/event/99", createdResult.Location);
     }
   }
 }

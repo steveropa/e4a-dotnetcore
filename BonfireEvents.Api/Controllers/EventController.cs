@@ -29,15 +29,15 @@ namespace BonfireEvents.Api.Controllers
         Description = theEvent.Description
       };
 
-      return new ActionResult<EventDetailModel>(mappedModel);
+      return mappedModel;
     }
 
     [HttpPost]
-    public ActionResult<int> Post(CreateEventModel createEventModel)
+    public IActionResult Post(CreateEventModel createEventModel)
     {
-      Event newEvent = new Event(title: createEventModel.Title, description: createEventModel.Description);
-
-      return new ActionResult<int>(_repository.Save(newEvent));
+      var newEvent = new Event(title: createEventModel.Title, description: createEventModel.Description);
+      var id = _repository.Save(newEvent);
+      return Created($"/event/{id.ToString()}", null);
     }
   }
 }
