@@ -35,7 +35,8 @@ namespace BonfireEvents.Api.Tests.Api
 
     ~ApiTestBase()
     {
-      _host.Dispose();   
+      Client.Dispose();
+      _host.Dispose();  
     }
   }
 }
