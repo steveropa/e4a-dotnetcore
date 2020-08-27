@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace BonfireEvents.Api.Tests.Api
 {
-  public class ApiTestBase
+  public class ApiTestBase : IDisposable
   {
     protected HttpClient Client;
     private IHost _host;
@@ -34,11 +34,25 @@ namespace BonfireEvents.Api.Tests.Api
       Client = _host.GetTestClient();
     }
 
-    ~ApiTestBase()
+    private void ReleaseUnmanagedResources()
     {
-      Client.Dispose();
-      _host.StopAsync(TimeSpan.Zero);
-      _host.Dispose();  
+      // TODO release unmanaged resources here
+    }
+
+    private void Dispose(bool disposing)
+    {
+      ReleaseUnmanagedResources();
+      if (disposing)
+      {
+        Client?.Dispose();
+        _host?.Dispose();
+      }
+    }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
     }
   }
 }
