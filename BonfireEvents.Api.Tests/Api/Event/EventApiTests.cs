@@ -1,4 +1,5 @@
 using System.Net;
+using BonfireEvents.Api.Tests.Api.Framework;
 using BonfireEvents.Api.ViewModels;
 using Newtonsoft.Json;
 using Shouldly;

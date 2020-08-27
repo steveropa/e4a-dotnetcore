@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 
-namespace BonfireEvents.Api.Tests.Api
+namespace BonfireEvents.Api.Tests.Api.Framework
 {
   public class ApiTestBase : IDisposable
   {

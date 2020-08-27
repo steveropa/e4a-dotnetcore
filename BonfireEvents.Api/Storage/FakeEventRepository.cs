@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BonfireEvents.Api.Domain;
 
@@ -11,14 +12,40 @@ namespace BonfireEvents.Api.Storage
   /// </summary>
   public class FakeEventRepository : IEventRepository
   {
+    private Dictionary<int, Event> inMemoryEvents = new Dictionary<int, Event>();
+    
+    public FakeEventRepository()
+    {
+      AddSampleData();
+    }
+
     public Event Find(int id)
     {
-      return new Event("Fake", "Fake");
+      return inMemoryEvents[id];
     }
 
     public int Save(Event anEvent)
     {
-      throw new System.NotImplementedException();
+      var newId = GetNextId();
+      anEvent.Id = newId;
+      
+      inMemoryEvents.Add(newId, anEvent);
+      return newId;
+    }
+
+    private int GetNextId()
+    {
+      return inMemoryEvents.Keys.Max() + 1;
+    }
+
+    private void AddSampleData()
+    {
+      inMemoryEvents.Add(1, new Event(title:"Fake", "Fake"));
+      inMemoryEvents.Add(2, new Event(title:"Meetup", "My Meetup"));
+      inMemoryEvents.Add(3, new Event(title:"Meetup", "My Meetup"));
+      inMemoryEvents.Add(4, new Event(title:"Meetup", "My Meetup"));
+      inMemoryEvents.Add(5, new Event(title:"Meetup", "My Meetup"));
+      inMemoryEvents.Add(6, new Event(title:"Meetup", "My Meetup"));
     }
   }
 }

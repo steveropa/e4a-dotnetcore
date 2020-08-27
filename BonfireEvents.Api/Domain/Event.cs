@@ -5,8 +5,9 @@ using BonfireEvents.Api.Exceptions;
 
 namespace BonfireEvents.Api.Domain
 {
-  public class Event
+  public class Event 
   {
+
     public Event(string title, string description)
     {
       ValidateEventData(title, description);
@@ -15,6 +16,7 @@ namespace BonfireEvents.Api.Domain
       Description = description;
     }
 
+    public int Id { get; internal set; }
     public string Title { get; }
     public string Description { get; }
     public DateTime Starts { get; private set; }
