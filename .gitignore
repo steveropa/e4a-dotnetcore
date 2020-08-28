@@ -16,3 +16,6 @@ obj/
 /httpRequests
 
 .idea/
+
+.vs/
+BonfireEvents.sln.DotSettings.user
