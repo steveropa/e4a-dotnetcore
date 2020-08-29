@@ -1,6 +1,7 @@
 using System;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Exceptions;
+using NSubstitute;
 using Xunit;
 
 namespace BonfireEvents.Api.Tests.Domain
@@ -85,6 +86,37 @@ namespace BonfireEvents.Api.Tests.Domain
     {
       var subject = CreateDraftEvent();
       Assert.Equal(EventStates.Draft, subject.Status);
+    }
+
+    [Fact]
+    public void An_event_can_have_multiple_organizers()
+    {
+      var subject = CreateEventThroughFactory();
+
+      Assert.Single(subject.Organizers); // Let's verify our object factory works!
+      
+      subject.AddOrganizer(new Organizer{Id=99, DisplayName = "Dave Laribee"});
+      Assert.Equal(2, subject.Organizers.Count);
+    }
+
+    /// <summary>
+    /// Creates an event using the CreateEvent factory. The returned event
+    /// will have an `Organizer` added.
+    /// </summary>
+    /// <returns>An Event Entity</returns>
+    private Event CreateEventThroughFactory()
+    {
+      var mockAuthAdapter = Substitute.For<IAuthenticationAdapter>();
+      var mockOrganizerAdapter = Substitute.For<IOrganizersAdapter>();
+      
+      mockAuthAdapter.GetCurrentUser().Returns("bobross");
+      mockOrganizerAdapter.GetOrganizerDetails(Arg.Any<string>()).Returns(new Organizer{Id = 10, DisplayName = "Bob Ross"});
+      
+      var service = new CreateEvent(mockAuthAdapter, mockOrganizerAdapter);
+
+      var theEvent = service.Execute("My Event", "A gathering of like-minded folk.");
+
+      return theEvent;
     }
 
     /// <summary>
