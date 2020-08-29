@@ -37,6 +37,7 @@ namespace BonfireEvents.Api.Domain
 
     public void AddOrganizer(Organizer organizer)
     {
+      if (_organizers.Any(o => o.Id == organizer.Id)) return;
       _organizers.Add(organizer);
     }
 

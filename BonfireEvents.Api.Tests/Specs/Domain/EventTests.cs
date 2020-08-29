@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Exceptions;
 using NSubstitute;
@@ -97,6 +98,16 @@ namespace BonfireEvents.Api.Tests.Domain
       
       subject.AddOrganizer(new Organizer{Id=99, DisplayName = "Dave Laribee"});
       Assert.Equal(2, subject.Organizers.Count);
+    }
+    
+    [Fact]
+    public void Adding_the_same_organizer_twice_has_no_effect()
+    {
+      var subject = CreateEventThroughFactory();
+
+      var alreadyAnOrganizer = subject.Organizers.First();
+      subject.AddOrganizer(alreadyAnOrganizer);
+      Assert.Single(subject.Organizers);
     }
 
     /// <summary>
