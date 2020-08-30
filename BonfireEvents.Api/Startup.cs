@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BonfireEvents.Api.Adapters;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Storage;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +28,9 @@ namespace BonfireEvents.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IAuthenticationAdapter, FakeAuthenticationAdapter>();
+            services.AddScoped<IOrganizersAdapter, FakeOrganizersAdapter>();
+            services.AddScoped<ICreateEventCommand, CreateEventCommand>();
             services.AddScoped<IEventRepository, FakeEventRepository>();
             services.AddControllers();
         }

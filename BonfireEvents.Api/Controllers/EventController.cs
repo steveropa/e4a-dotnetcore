@@ -12,10 +12,12 @@ namespace BonfireEvents.Api.Controllers
   public class EventController : ControllerBase
   {
     private readonly IEventRepository _repository;
+    private readonly ICreateEventCommand _createEventCommand;
 
-    public EventController(IEventRepository repository)
+    public EventController(IEventRepository repository, ICreateEventCommand createEventCommand)
     {
       _repository = repository;
+      _createEventCommand = createEventCommand;
     }
 
     [HttpGet(template: "{id}")]
@@ -35,8 +37,9 @@ namespace BonfireEvents.Api.Controllers
     [HttpPost]
     public IActionResult Post(CreateEventModel createEventModel)
     {
-      var newEvent = new Event(title: createEventModel.Title, description: createEventModel.Description);
-      var id = _repository.Save(newEvent);
+      var anotherEvent =
+        _createEventCommand.Execute(title: createEventModel.Title, description: createEventModel.Description);
+      var id = _repository.Save(anotherEvent);
       return Created($"/event/{id.ToString()}", null);
     }
   }

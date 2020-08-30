@@ -17,7 +17,7 @@ namespace BonfireEvents.Api.Tests.Controllers
       var repository = Substitute.For<IEventRepository>();
       repository.Find(1).Returns(new Event("My Event", "A description"));
 
-      new EventController(repository).Get(1);
+      new EventController(repository, null).Get(1);
 
       repository.Received().Find(1);
     }
@@ -29,7 +29,7 @@ namespace BonfireEvents.Api.Tests.Controllers
       var theEvent = new Event("My Event", "A description");
       repository.Find(1).Returns(theEvent);
 
-      var subject = new EventController(repository);
+      var subject = new EventController(repository, null);
 
       var result = subject.Get(1);
       Assert.Equal("My Event", result.Value.Title);
@@ -40,7 +40,13 @@ namespace BonfireEvents.Api.Tests.Controllers
     {
       var repository = Substitute.For<IEventRepository>();
       repository.Save(Arg.Any<Event>()).Returns(99);
-      var subject = new EventController(repository);
+
+      var createEventCommand = Substitute.For<ICreateEventCommand>();
+      Event theEvent = new Event(title: "My Event", description: "A description.");
+      
+      createEventCommand.Execute(Arg.Any<string>(), Arg.Any<string>()).Returns(theEvent);
+      
+      var subject = new EventController(repository, createEventCommand);
 
       var result = subject.Post(new CreateEventModel
         {Title = "My Event", Description = "A description."});

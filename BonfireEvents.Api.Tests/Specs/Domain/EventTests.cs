@@ -150,7 +150,7 @@ namespace BonfireEvents.Api.Tests.Domain
       mockAuthAdapter.GetCurrentUser().Returns("bobross");
       mockOrganizerAdapter.GetOrganizerDetails(Arg.Any<string>()).Returns(new Organizer{Id = 10, DisplayName = "Bob Ross"});
       
-      var service = new CreateEvent(mockAuthAdapter, mockOrganizerAdapter);
+      var service = new CreateEventCommand(mockAuthAdapter, mockOrganizerAdapter);
 
       var theEvent = service.Execute("My Event", "A gathering of like-minded folk.");
 

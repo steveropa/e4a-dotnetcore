@@ -1,11 +1,11 @@
 namespace BonfireEvents.Api.Domain
 {
-  public class CreateEvent
+  public class CreateEventCommand : ICreateEventCommand
   {
     private readonly IAuthenticationAdapter _authenticationAdapter;
     private readonly IOrganizersAdapter _organizersAdapter;
 
-    public CreateEvent(IAuthenticationAdapter authenticationAdapter, IOrganizersAdapter organizersAdapter)
+    public CreateEventCommand(IAuthenticationAdapter authenticationAdapter, IOrganizersAdapter organizersAdapter)
     {
       _authenticationAdapter = authenticationAdapter;
       _organizersAdapter = organizersAdapter;

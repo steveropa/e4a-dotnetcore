@@ -16,7 +16,7 @@ namespace BonfireEvents.Api.Tests.Domain
 
       mockAuthenticationAdapter.GetCurrentUser().Returns("dave");
 
-      var subject = new CreateEvent(mockAuthenticationAdapter, mockOrganizersAdapter);
+      var subject = new CreateEventCommand(mockAuthenticationAdapter, mockOrganizersAdapter);
 
       // Act
       subject.Execute("My Event", "My Description");
@@ -37,7 +37,7 @@ namespace BonfireEvents.Api.Tests.Domain
       var theOrganizer = new Organizer {Id = 99, DisplayName = "David Laribee"};
       mockOrganizersAdapter.GetOrganizerDetails("dave").Returns(theOrganizer);
 
-      var subject = new CreateEvent(mockAuthenticationAdapter, mockOrganizersAdapter);
+      var subject = new CreateEventCommand(mockAuthenticationAdapter, mockOrganizersAdapter);
 
       // Act
       var theEvent = subject.Execute("My Event", "My Description");
