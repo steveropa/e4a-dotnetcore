@@ -129,6 +129,13 @@ namespace BonfireEvents.Api.Tests.Domain
 
       Assert.Throws<EventRequiresOrganizerException>(() => subject.RemoveOrganizer(subject.Organizers.First().Id));
     }
+
+    [Fact]
+    public void Removing_an_organizer_that_was_never_an_organizer_has_no_effect()
+    {
+      var subject = CreateEventThroughCommand();
+      subject.RemoveOrganizer(3000);
+    }
     
     /// <summary>
     /// Creates an event using the CreateEvent factory. The returned event
