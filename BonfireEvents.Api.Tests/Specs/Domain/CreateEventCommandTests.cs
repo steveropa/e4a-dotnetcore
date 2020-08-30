@@ -5,7 +5,7 @@ using Xunit;
 
 namespace BonfireEvents.Api.Tests.Domain
 {
-  public class CreateEventTests
+  public class CreateEventCommandTests
   {
     [Fact]
     public void Retrieve_the_organizer_data_for_the_currently_login()
