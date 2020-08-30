@@ -41,6 +41,12 @@ namespace BonfireEvents.Api.Domain
       _organizers.Add(organizer);
     }
 
+    public void RemoveOrganizer(int organizerId)
+    {
+      var organizer = _organizers.Find(o => o.Id == organizerId);
+      _organizers.Remove(organizer);
+    }
+
     private static void ValidateEventData(string title, string description)
     {
       var errors = new List<string>();

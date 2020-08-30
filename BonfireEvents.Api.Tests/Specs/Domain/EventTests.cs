@@ -92,7 +92,7 @@ namespace BonfireEvents.Api.Tests.Domain
     [Fact]
     public void An_event_can_have_multiple_organizers()
     {
-      var subject = CreateEventThroughFactory();
+      var subject = CreateEventThroughCommand();
 
       Assert.Single(subject.Organizers); // Let's verify our object factory works!
       
@@ -103,19 +103,31 @@ namespace BonfireEvents.Api.Tests.Domain
     [Fact]
     public void Adding_the_same_organizer_twice_has_no_effect()
     {
-      var subject = CreateEventThroughFactory();
+      var subject = CreateEventThroughCommand();
 
       var alreadyAnOrganizer = subject.Organizers.First();
       subject.AddOrganizer(alreadyAnOrganizer);
       Assert.Single(subject.Organizers);
     }
 
+    [Fact]
+    public void Organizers_can_be_removed()
+    {  
+      var subject = CreateEventThroughCommand();
+      
+      subject.AddOrganizer(new Organizer{Id=99, DisplayName = "Dave Laribee"});
+      Assert.Equal(2, subject.Organizers.Count);
+
+      subject.RemoveOrganizer(99);
+      Assert.Equal(1, subject.Organizers.Count);
+    }
+    
     /// <summary>
     /// Creates an event using the CreateEvent factory. The returned event
     /// will have an `Organizer` added.
     /// </summary>
     /// <returns>An Event Entity</returns>
-    private Event CreateEventThroughFactory()
+    private Event CreateEventThroughCommand()
     {
       var mockAuthAdapter = Substitute.For<IAuthenticationAdapter>();
       var mockOrganizerAdapter = Substitute.For<IOrganizersAdapter>();
