@@ -121,6 +121,14 @@ namespace BonfireEvents.Api.Tests.Domain
       subject.RemoveOrganizer(99);
       Assert.Equal(1, subject.Organizers.Count);
     }
+
+    [Fact]
+    public void The_last_organizer_cannot_be_removed()
+    {
+      var subject = CreateEventThroughCommand();
+
+      Assert.Throws<EventRequiresOrganizerException>(() => subject.RemoveOrganizer(subject.Organizers.First().Id));
+    }
     
     /// <summary>
     /// Creates an event using the CreateEvent factory. The returned event

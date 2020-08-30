@@ -44,6 +44,8 @@ namespace BonfireEvents.Api.Domain
     public void RemoveOrganizer(int organizerId)
     {
       var organizer = _organizers.Find(o => o.Id == organizerId);
+      if ((organizer != null && organizer.Id == organizerId) && (_organizers.Count == 1))
+        throw new EventRequiresOrganizerException();
       _organizers.Remove(organizer);
     }
 
