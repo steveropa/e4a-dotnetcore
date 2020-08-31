@@ -146,6 +146,25 @@ namespace BonfireEvents.Api.Tests.Domain
         subject.SetCapacity(50);
         Assert.Equal(50, subject.Capacity);
       }
+
+      [Fact]
+      public void Events_have_ticket_types()
+      {
+        var subject = CreateEventThroughCommand();
+        subject.AddTicketType(new TicketType());
+        Assert.Single(subject.TicketTypes);
+      }
+
+      [Fact]
+      public void Tickets_have_a_max_quantity_which_cannot_exceed_the_event_capacity()
+      {
+        var subject = CreateEventThroughCommand();
+        subject.SetCapacity(50);
+        var ticketType = new TicketType { Quantity = 51};
+
+        Assert.Throws<EventCapacityExceededByTicketType>(() => subject.AddTicketType(ticketType));
+      }
+
     }
     
     /// <summary>

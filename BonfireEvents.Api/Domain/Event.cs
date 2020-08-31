@@ -9,6 +9,7 @@ namespace BonfireEvents.Api.Domain
   public class Event
   {
     private readonly List<Organizer> _organizers = new List<Organizer>();
+    private readonly List<TicketType> _ticketTypes = new List<TicketType>();
 
     public Event(string title, string description)
     {
@@ -19,19 +20,13 @@ namespace BonfireEvents.Api.Domain
     }
 
     public int Id { get; internal set; }
-
     public string Title { get; }
-
     public string Description { get; }
-
     public DateTime Starts { get; private set; }
-
     public DateTime Ends { get; private set; }
-
     public string Status => EventStates.Draft;
-
     public ImmutableList<Organizer> Organizers => _organizers.ToImmutableList();
-    
+    public ImmutableList<TicketType> TicketTypes => _ticketTypes.ToImmutableList();
     public int Capacity { get; private set; }
 
     public void ScheduleEvent(DateTime starts, DateTime ends, Func<DateTime> now)
@@ -75,6 +70,12 @@ namespace BonfireEvents.Api.Domain
         ex.ValidationErrors.AddRange(errors);
         throw ex;
       }
+    }
+
+    public void AddTicketType(TicketType ticketType)
+    {
+      if (ticketType.Quantity > Capacity) throw new EventCapacityExceededByTicketType();
+      _ticketTypes.Add(ticketType);
     }
   }
 }
