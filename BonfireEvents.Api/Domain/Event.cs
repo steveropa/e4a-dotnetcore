@@ -77,5 +77,10 @@ namespace BonfireEvents.Api.Domain
       if (ticketType.Quantity > Capacity) throw new EventCapacityExceededByTicketType();
       _ticketTypes.Add(ticketType);
     }
+
+    public ImmutableList<TicketType> GetAvailableTicketTypes(DateTime asOf)
+    {
+      return _ticketTypes.Where(tt => tt.Expires > asOf).ToImmutableList();
+    }
   }
 }

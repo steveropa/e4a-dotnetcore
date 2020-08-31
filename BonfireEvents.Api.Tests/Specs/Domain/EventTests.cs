@@ -201,6 +201,25 @@ namespace BonfireEvents.Api.Tests.Domain
         
         Assert.Equal(2, subject.TicketTypes.Count);
       }
+
+      [Fact]
+      public void Ticket_types_can_expire()
+      {
+        var subject = CreateEventThroughCommand();
+        subject.SetCapacity(50);
+        
+        subject.ScheduleEvent(
+          DateTime.Now.AddDays(10), 
+          DateTime.Now.AddDays(10).AddHours(1), 
+          ()=>DateTime.Now);
+        
+        var ticketType = new TicketType(quantity: 20, expires: DateTime.Now.AddDays(5));
+
+        subject.AddTicketType(ticketType);
+
+        Assert.Empty(subject.GetAvailableTicketTypes(DateTime.Now.AddDays(6)));
+        Assert.Single(subject.GetAvailableTicketTypes(DateTime.Now.AddDays(4)));
+      }
     }
     
     /// <summary>
