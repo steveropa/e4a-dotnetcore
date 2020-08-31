@@ -186,6 +186,21 @@ namespace BonfireEvents.Api.Tests.Domain
       {
         Assert.Throws<TicketsMayNotHaveNegativeCostException>(() => new TicketType(cost: -1M));
       }
+
+      [Fact]
+      public void An_event_can_have_multiple_ticket_types()
+      {
+        
+        var subject = CreateEventThroughCommand();
+        subject.SetCapacity(50);
+        var ticketType1 = new TicketType(quantity: 20);
+        var ticketType2 = new TicketType(quantity: 20);
+        
+        subject.AddTicketType(ticketType1);
+        subject.AddTicketType(ticketType2);
+        
+        Assert.Equal(2, subject.TicketTypes.Count);
+      }
     }
     
     /// <summary>
