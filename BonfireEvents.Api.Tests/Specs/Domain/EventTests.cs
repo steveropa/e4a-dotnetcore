@@ -3,6 +3,7 @@ using System.Linq;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Domain.Exceptions;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using Xunit;
 
 namespace BonfireEvents.Api.Tests.Domain
@@ -160,11 +161,31 @@ namespace BonfireEvents.Api.Tests.Domain
       {
         var subject = CreateEventThroughCommand();
         subject.SetCapacity(50);
-        var ticketType = new TicketType { Quantity = 51};
+        var ticketType = new TicketType(quantity: 60);
 
         Assert.Throws<EventCapacityExceededByTicketType>(() => subject.AddTicketType(ticketType));
       }
 
+      [Fact]
+      public void Tickets_can_have_a_cost()
+      {
+        var subject = new TicketType( quantity:10, cost:20.00M );
+        
+        Assert.Equal(20.00M, subject.Cost);
+      }
+
+      [Fact]
+      public void By_default_ticket_types_are_free()
+      {
+        var subject = new TicketType();
+        Assert.Equal(0M, subject.Cost);
+      }
+
+      [Fact]
+      public void Tickets_may_not_have_a_negative_cost()
+      {
+        Assert.Throws<TicketsMayNotHaveNegativeCostException>(() => new TicketType(cost: -1M));
+      }
     }
     
     /// <summary>
