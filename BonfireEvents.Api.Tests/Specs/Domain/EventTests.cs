@@ -136,13 +136,24 @@ namespace BonfireEvents.Api.Tests.Domain
       var subject = CreateEventThroughCommand();
       subject.RemoveOrganizer(3000);
     }
+
+    public class Ticketing
+    {
+      [Fact]
+      public void Events_have_a_capacity()
+      {
+        var subject = CreateEventThroughCommand();
+        subject.SetCapacity(50);
+        Assert.Equal(50, subject.Capacity);
+      }
+    }
     
     /// <summary>
     /// Creates an event using the CreateEvent factory. The returned event
     /// will have an `Organizer` added.
     /// </summary>
     /// <returns>An Event Entity</returns>
-    private Event CreateEventThroughCommand()
+    private static Event CreateEventThroughCommand()
     {
       var mockAuthAdapter = Substitute.For<IAuthenticationAdapter>();
       var mockOrganizerAdapter = Substitute.For<IOrganizersAdapter>();

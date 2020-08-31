@@ -8,12 +8,6 @@ namespace BonfireEvents.Api.Domain
 {
   public class Event
   {
-    public int Id { get; internal set; }
-    public string Title { get; }
-    public string Description { get; }
-    public DateTime Starts { get; private set; }
-    public DateTime Ends { get; private set; }
-    public string Status => EventStates.Draft;
     private readonly List<Organizer> _organizers = new List<Organizer>();
 
     public Event(string title, string description)
@@ -24,7 +18,21 @@ namespace BonfireEvents.Api.Domain
       Description = description;
     }
 
+    public int Id { get; internal set; }
+
+    public string Title { get; }
+
+    public string Description { get; }
+
+    public DateTime Starts { get; private set; }
+
+    public DateTime Ends { get; private set; }
+
+    public string Status => EventStates.Draft;
+
     public ImmutableList<Organizer> Organizers => _organizers.ToImmutableList();
+    
+    public int Capacity { get; private set; }
 
     public void ScheduleEvent(DateTime starts, DateTime ends, Func<DateTime> now)
     {
@@ -47,6 +55,11 @@ namespace BonfireEvents.Api.Domain
       if ((organizer != null && organizer.Id == organizerId) && (_organizers.Count == 1))
         throw new EventRequiresOrganizerException();
       _organizers.Remove(organizer);
+    }
+
+    public void SetCapacity(int maximum)
+    {
+      Capacity = maximum;
     }
 
     private static void ValidateEventData(string title, string description)
