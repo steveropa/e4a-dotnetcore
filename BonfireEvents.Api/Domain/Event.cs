@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using BonfireEvents.Api.Exceptions;
+using BonfireEvents.Api.Domain.Exceptions;
 
 namespace BonfireEvents.Api.Domain
 {

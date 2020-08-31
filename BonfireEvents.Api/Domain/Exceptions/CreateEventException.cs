@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace BonfireEvents.Api.Exceptions
+namespace BonfireEvents.Api.Domain.Exceptions
 {
   public class CreateEventException : Exception
   {

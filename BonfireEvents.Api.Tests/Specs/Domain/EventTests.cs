@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using BonfireEvents.Api.Domain;
-using BonfireEvents.Api.Exceptions;
+using BonfireEvents.Api.Domain.Exceptions;
 using NSubstitute;
 using Xunit;
 

@@ -1,6 +1,6 @@
 using System;
 
-namespace BonfireEvents.Api.Exceptions
+namespace BonfireEvents.Api.Domain.Exceptions
 {
   public class InvalidSchedulingDatesException : Exception
   {
