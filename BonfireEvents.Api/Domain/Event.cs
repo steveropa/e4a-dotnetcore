@@ -82,5 +82,10 @@ namespace BonfireEvents.Api.Domain
     {
       return _ticketTypes.Where(tt => tt.Expires > asOf).ToImmutableList();
     }
+
+    public void Publish(Func<DateTime> now)
+    {
+      throw new EventsScheduledInPastCannotBePublishedException();
+    }
   }
 }

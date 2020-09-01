@@ -221,6 +221,19 @@ namespace BonfireEvents.Api.Tests.Domain
         Assert.Single(subject.GetAvailableTicketTypes(DateTime.Now.AddDays(4)));
       }
     }
+
+    public class Publishing
+    {
+      [Fact]
+      public void Events_scheduled_in_the_past_cannot_be_published()
+      {
+        var subject = CreateEventThroughCommand();
+        
+        subject.ScheduleEvent(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(-2).AddHours(2), () => DateTime.Now.AddDays(-3));
+
+        Assert.Throws<EventsScheduledInPastCannotBePublishedException>(() => subject.Publish(() => DateTime.Now));
+      }
+    }
     
     /// <summary>
     /// Creates an event using the CreateEvent factory. The returned event
