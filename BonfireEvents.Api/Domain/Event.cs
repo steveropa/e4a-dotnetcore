@@ -24,7 +24,8 @@ namespace BonfireEvents.Api.Domain
     public string Description { get; }
     public DateTime Starts { get; private set; }
     public DateTime Ends { get; private set; }
-    public string Status => EventStates.Draft;
+    public string Status { get; private set; } = EventStates.Draft;
+
     public ImmutableList<Organizer> Organizers => _organizers.ToImmutableList();
     public ImmutableList<TicketType> TicketTypes => _ticketTypes.ToImmutableList();
     public int Capacity { get; private set; }
@@ -85,7 +86,8 @@ namespace BonfireEvents.Api.Domain
 
     public void Publish(Func<DateTime> now)
     {
-      throw new EventsScheduledInPastCannotBePublishedException();
+      if (Starts < now()) throw new EventsScheduledInPastCannotBePublishedException();
+      Status = EventStates.Published;
     }
   }
 }

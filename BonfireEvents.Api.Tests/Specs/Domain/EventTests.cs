@@ -14,21 +14,22 @@ namespace BonfireEvents.Api.Tests.Domain
     public void Event_has_a_title()
     {
       Event subject = new Event(title: @"My C# Event", description: "Monthly meet-up for enthusiasts.");
-      
+
       Assert.Equal("My C# Event", subject.Title);
     }
-    
+
     [Fact]
     public void Title_is_required()
     {
-      Assert.Throws<CreateEventException>(() => new Event(title: null, description: "Monthly meet-up for enthusiasts."));
+      Assert.Throws<CreateEventException>(() =>
+        new Event(title: null, description: "Monthly meet-up for enthusiasts."));
     }
 
     [Fact]
     public void Event_has_a_description()
     {
       Event subject = new Event(title: @"My C# Event", description: "Monthly meet-up for enthusiasts.");
-      
+
       Assert.Equal("Monthly meet-up for enthusiasts.", subject.Description);
     }
 
@@ -42,7 +43,7 @@ namespace BonfireEvents.Api.Tests.Domain
     public void Title_and_description_are_validated_together()
     {
       var ex = Assert.Throws<CreateEventException>(() => new Event(title: null, description: null));
-      
+
       Assert.Contains("Title is required", ex.ValidationErrors);
       Assert.Contains("Description is required", ex.ValidationErrors);
     }
@@ -53,9 +54,9 @@ namespace BonfireEvents.Api.Tests.Domain
       var subject = CreateDraftEvent();
       var starts = DateTime.Now.AddDays(1);
       var ends = starts.AddHours(2);
-      
-      subject.ScheduleEvent(starts: starts, ends: ends, ()=> DateTime.Now);
-      
+
+      subject.ScheduleEvent(starts: starts, ends: ends, () => DateTime.Now);
+
       Assert.Equal(starts, subject.Starts);
       Assert.Equal(ends, subject.Ends);
     }
@@ -66,10 +67,10 @@ namespace BonfireEvents.Api.Tests.Domain
       var subject = CreateDraftEvent();
       var starts = DateTime.Now.AddDays(1);
       var ends = starts.AddDays(-1);
-      
+
       Assert.Throws<InvalidSchedulingDatesException>(() =>
       {
-        subject.ScheduleEvent(starts: starts, ends: ends, ()=> DateTime.Now);
+        subject.ScheduleEvent(starts: starts, ends: ends, () => DateTime.Now);
       });
     }
 
@@ -96,11 +97,11 @@ namespace BonfireEvents.Api.Tests.Domain
       var subject = CreateEventThroughCommand();
 
       Assert.Single(subject.Organizers); // Let's verify our object factory works!
-      
-      subject.AddOrganizer(new Organizer{Id=99, DisplayName = "Dave Laribee"});
+
+      subject.AddOrganizer(new Organizer {Id = 99, DisplayName = "Dave Laribee"});
       Assert.Equal(2, subject.Organizers.Count);
     }
-    
+
     [Fact]
     public void Adding_the_same_organizer_twice_has_no_effect()
     {
@@ -113,10 +114,10 @@ namespace BonfireEvents.Api.Tests.Domain
 
     [Fact]
     public void Organizers_can_be_removed()
-    {  
+    {
       var subject = CreateEventThroughCommand();
-      
-      subject.AddOrganizer(new Organizer{Id=99, DisplayName = "Dave Laribee"});
+
+      subject.AddOrganizer(new Organizer {Id = 99, DisplayName = "Dave Laribee"});
       Assert.Equal(2, subject.Organizers.Count);
 
       subject.RemoveOrganizer(99);
@@ -169,8 +170,8 @@ namespace BonfireEvents.Api.Tests.Domain
       [Fact]
       public void Tickets_can_have_a_cost()
       {
-        var subject = new TicketType( quantity:10, cost:20.00M );
-        
+        var subject = new TicketType(quantity: 10, cost: 20.00M);
+
         Assert.Equal(20.00M, subject.Cost);
       }
 
@@ -190,15 +191,14 @@ namespace BonfireEvents.Api.Tests.Domain
       [Fact]
       public void An_event_can_have_multiple_ticket_types()
       {
-        
         var subject = CreateEventThroughCommand();
         subject.SetCapacity(50);
         var ticketType1 = new TicketType(quantity: 20);
         var ticketType2 = new TicketType(quantity: 20);
-        
+
         subject.AddTicketType(ticketType1);
         subject.AddTicketType(ticketType2);
-        
+
         Assert.Equal(2, subject.TicketTypes.Count);
       }
 
@@ -207,12 +207,12 @@ namespace BonfireEvents.Api.Tests.Domain
       {
         var subject = CreateEventThroughCommand();
         subject.SetCapacity(50);
-        
+
         subject.ScheduleEvent(
-          DateTime.Now.AddDays(10), 
-          DateTime.Now.AddDays(10).AddHours(1), 
-          ()=>DateTime.Now);
-        
+          DateTime.Now.AddDays(10),
+          DateTime.Now.AddDays(10).AddHours(1),
+          () => DateTime.Now);
+
         var ticketType = new TicketType(quantity: 20, expires: DateTime.Now.AddDays(5));
 
         subject.AddTicketType(ticketType);
@@ -225,16 +225,33 @@ namespace BonfireEvents.Api.Tests.Domain
     public class Publishing
     {
       [Fact]
+      public void An_event_scheduled_in_the_future_can_be_published()
+      {
+        var subject = CreateEventThroughCommand();
+
+        var rightNow = new Func<DateTime>(() => DateTime.Now);
+
+        subject.ScheduleEvent(DateTime.Now.AddDays(1), 
+          DateTime.Now.AddDays(1).AddHours(2), 
+          rightNow);
+        
+        subject.Publish(rightNow);
+        
+        Assert.Equal(EventStates.Published, subject.Status);
+      }
+
+      [Fact]
       public void Events_scheduled_in_the_past_cannot_be_published()
       {
         var subject = CreateEventThroughCommand();
-        
-        subject.ScheduleEvent(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(-2).AddHours(2), () => DateTime.Now.AddDays(-3));
+
+        subject.ScheduleEvent(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(-2).AddHours(2),
+          () => DateTime.Now.AddDays(-3));
 
         Assert.Throws<EventsScheduledInPastCannotBePublishedException>(() => subject.Publish(() => DateTime.Now));
       }
     }
-    
+
     /// <summary>
     /// Creates an event using the CreateEvent factory. The returned event
     /// will have an `Organizer` added.
@@ -244,10 +261,11 @@ namespace BonfireEvents.Api.Tests.Domain
     {
       var mockAuthAdapter = Substitute.For<IAuthenticationAdapter>();
       var mockOrganizerAdapter = Substitute.For<IOrganizersAdapter>();
-      
+
       mockAuthAdapter.GetCurrentUser().Returns("bobross");
-      mockOrganizerAdapter.GetOrganizerDetails(Arg.Any<string>()).Returns(new Organizer{Id = 10, DisplayName = "Bob Ross"});
-      
+      mockOrganizerAdapter.GetOrganizerDetails(Arg.Any<string>())
+        .Returns(new Organizer {Id = 10, DisplayName = "Bob Ross"});
+
       var service = new CreateEventCommand(mockAuthAdapter, mockOrganizerAdapter);
 
       var theEvent = service.Execute("My Event", "A gathering of like-minded folk.");
