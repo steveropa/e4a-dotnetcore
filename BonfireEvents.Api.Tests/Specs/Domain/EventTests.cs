@@ -3,6 +3,7 @@ using System.Linq;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Domain.Exceptions;
 using NSubstitute;
+using NSubstitute.ReceivedExtensions;
 using Xunit;
 
 namespace BonfireEvents.Api.Tests.Specs.Domain
@@ -234,6 +235,10 @@ namespace BonfireEvents.Api.Tests.Specs.Domain
           DateTime.Now.AddDays(1).AddHours(2), 
           rightNow);
         
+        subject.SetCapacity(20);
+        
+        subject.AddTicketType(new TicketType(quantity:20, cost:0M, DateTime.Now.AddDays(2).AddMinutes(-10)));
+        
         subject.Publish(rightNow);
         
         Assert.Equal(EventStates.Published, subject.Status);
@@ -248,6 +253,30 @@ namespace BonfireEvents.Api.Tests.Specs.Domain
           () => DateTime.Now.AddDays(-3));
 
         Assert.Throws<EventsScheduledInPastCannotBePublishedException>(() => subject.Publish(() => DateTime.Now));
+      }
+
+      [Fact]
+      public void Events_that_are_not_scheduled_cannot_be_published()
+      {
+        var subject = CreateEventThroughCommand();
+        
+        Assert.Throws<UnscheduledEventsCannotBePublishedException>(() => subject.Publish(() => DateTime.Now));
+      }
+
+      [Fact]
+      public void An_event_requires_tickets_to_be_published()
+      {
+        var subject = CreateEventThroughCommand();
+        
+        subject.ScheduleEvent(
+          DateTime.Now.AddDays(2), 
+          DateTime.Now.AddDays(2).AddHours(2),
+          () => DateTime.Now);
+        
+        subject.SetCapacity(20);
+        
+        
+        Assert.Throws<AnEventRequiresTicketsToBePublishedException>(() => subject.Publish(() => DateTime.Now));
       }
     }
 
