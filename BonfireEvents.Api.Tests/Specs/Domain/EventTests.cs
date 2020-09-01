@@ -121,7 +121,7 @@ namespace BonfireEvents.Api.Tests.Domain
       Assert.Equal(2, subject.Organizers.Count);
 
       subject.RemoveOrganizer(99);
-      Assert.Equal(1, subject.Organizers.Count);
+      Assert.Single(subject.Organizers);
     }
 
     [Fact]
