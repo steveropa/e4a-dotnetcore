@@ -3,10 +3,9 @@ using System.Linq;
 using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Domain.Exceptions;
 using NSubstitute;
-using NSubstitute.ReceivedExtensions;
 using Xunit;
 
-namespace BonfireEvents.Api.Tests.Domain
+namespace BonfireEvents.Api.Tests.Specs.Domain
 {
   public class EventTests
   {
