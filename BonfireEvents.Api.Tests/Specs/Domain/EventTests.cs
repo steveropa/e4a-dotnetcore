@@ -323,7 +323,7 @@ namespace BonfireEvents.Api.Tests.Specs.Domain
     /// will have an `Organizer` added.
     /// </summary>
     /// <returns>An Event Entity</returns>
-    private static Event CreateEventThroughCommand()
+    public static Event CreateEventThroughCommand()
     {
       var mockAuthAdapter = Substitute.For<IAuthenticationAdapter>();
       var mockOrganizerAdapter = Substitute.For<IOrganizersAdapter>();

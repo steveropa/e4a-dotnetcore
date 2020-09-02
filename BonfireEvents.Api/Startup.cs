@@ -28,10 +28,7 @@ namespace BonfireEvents.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IAuthenticationAdapter, FakeAuthenticationAdapter>();
-            services.AddScoped<IOrganizersAdapter, FakeOrganizersAdapter>();
-            services.AddScoped<ICreateEventCommand, CreateEventCommand>();
-            services.AddScoped<IEventRepository, FakeEventRepository>();
+            Dependencies.RegisterDependencies(services);
             services.AddControllers();
         }
 
