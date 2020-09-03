@@ -1,7 +1,9 @@
 ﻿using System;
-using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Models;
 using BonfireEvents.Api.ViewModels;
+using BonfireEvents.Domain.Event;
+using BonfireEvents.Domain.Event.Adapters;
+using BonfireEvents.Domain.Event.Commands;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

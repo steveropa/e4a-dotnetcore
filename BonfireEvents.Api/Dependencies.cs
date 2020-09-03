@@ -1,6 +1,8 @@
 using BonfireEvents.Api.Adapters;
-using BonfireEvents.Api.Domain;
 using BonfireEvents.Api.Storage;
+using BonfireEvents.Domain.Event;
+using BonfireEvents.Domain.Event.Adapters;
+using BonfireEvents.Domain.Event.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BonfireEvents.Api

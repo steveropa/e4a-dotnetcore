@@ -1,4 +1,6 @@
-using BonfireEvents.Api.Domain;
+using BonfireEvents.Domain.Event;
+using BonfireEvents.Domain.Event.Adapters;
+using BonfireEvents.Domain.Event.Commands;
 
 namespace BonfireEvents.Api.Adapters
 {

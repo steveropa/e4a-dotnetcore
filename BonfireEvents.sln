@@ -10,6 +10,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonfireEvents.Domain.Event", "BonfireEvents.Domain.Event\BonfireEvents.Domain.Event.csproj", "{ED88E408-A5C9-4D8A-890C-A75812D2B480}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BonfireEvents.Domain.Event.Specs", "BonfireEvents.Domain.Event.Specs\BonfireEvents.Domain.Event.Specs.csproj", "{FCF98DA6-2D03-4033-B7D8-2DD28A7BC8CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +28,13 @@ Global
 		{DA964B27-46D3-44A7-A525-D31FE639A11A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA964B27-46D3-44A7-A525-D31FE639A11A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA964B27-46D3-44A7-A525-D31FE639A11A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED88E408-A5C9-4D8A-890C-A75812D2B480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED88E408-A5C9-4D8A-890C-A75812D2B480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED88E408-A5C9-4D8A-890C-A75812D2B480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED88E408-A5C9-4D8A-890C-A75812D2B480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCF98DA6-2D03-4033-B7D8-2DD28A7BC8CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCF98DA6-2D03-4033-B7D8-2DD28A7BC8CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCF98DA6-2D03-4033-B7D8-2DD28A7BC8CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCF98DA6-2D03-4033-B7D8-2DD28A7BC8CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

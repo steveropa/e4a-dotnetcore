@@ -21,8 +21,4 @@
     <ProjectReference Include="..\BonfireEvents.Api\BonfireEvents.Api.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Specs" />
-  </ItemGroup>
-
 </Project>

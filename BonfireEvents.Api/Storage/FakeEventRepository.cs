@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using BonfireEvents.Api.Domain;
+using BonfireEvents.Domain.Event;
+using BonfireEvents.Domain.Event.Adapters;
 
 namespace BonfireEvents.Api.Storage
 {
