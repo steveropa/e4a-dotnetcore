@@ -5,11 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Exceptions" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BonfireEvents.Domain.Event\BonfireEvents.Domain.Event.csproj" />
+    <Folder Include="Models" />
   </ItemGroup>
 
 
