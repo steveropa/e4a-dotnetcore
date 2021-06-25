@@ -1,16 +1,17 @@
 using BonfireEvents.Api.Controllers;
-using Xunit;
+using NUnit;
+using NUnit.Framework;
 
 namespace BonfireEvents.Api.Tests.Controllers
 {
     public class EventControllerTests
     {
-        [Fact]
+        [Test]
         public void Get_returns_hello_world()
         {
             var subject = new EventController();
             var result = subject.Get();
-            Assert.Equal("Hello World", actual: result);
+            Assert.AreEqual("Hello World", actual: result);
         }
     }
 }
