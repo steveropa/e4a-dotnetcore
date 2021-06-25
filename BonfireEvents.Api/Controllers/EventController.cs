@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace BonfireEvents.Api.Controllers
 {
@@ -12,6 +13,10 @@ namespace BonfireEvents.Api.Controllers
         {
             return "Hello World";
         }
-        
+
+        public ActionResult<int> Post(CreateEventModel createEventModel)
+        {
+            return new ActionResult<int>(99);
+        }
     }
 }
