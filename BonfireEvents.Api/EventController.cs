@@ -10,10 +10,14 @@ namespace BonfireEvents.Api.Controllers
   [Route("event")]
   public class EventController : ControllerBase
   {
-
+  
     [HttpPost]
     public IActionResult Post(CreateEventDto eventData)
     {
+        if (eventData == null)
+        {
+            throw new ArgumentNullException("eventData is null");
+        }
       if (eventData.Description == null) throw new ArgumentException();
       if (eventData.Title == null) throw new ArgumentException();
       
@@ -28,22 +32,28 @@ namespace BonfireEvents.Api.Controllers
 
       if (eventData.Status == "Published")
       {
-        if (eventData.Starts < DateTime.Now) 
-        {
-          throw new ArgumentException();
-        }
-        if (eventData.Capacity <= 0) throw new ArgumentException(); 
-        if (eventData.Tickets.Capacity != eventData.Capacity) throw new ArgumentException();
-
-        decimal potentialRevenue = eventData.Tickets.Capacity * eventData.Tickets.Cost;
-        eventData.PotentialRevenue = potentialRevenue;
-        
-        new EventListingManager().Notify(eventData);
+          NotifyOrganizer(eventData);
       }
 
       new DataAccessLayer().Save(eventData);
       
       return Ok();
+    }
+
+    private static void NotifyOrganizer(CreateEventDto eventData)
+    {
+        if (eventData.Starts < DateTime.Now)
+        {
+            throw new ArgumentException();
+        }
+
+        if (eventData.Capacity <= 0) throw new ArgumentException();
+        if (eventData.Tickets.Capacity != eventData.Capacity) throw new ArgumentException();
+
+        decimal potentialRevenue = eventData.Tickets.Capacity * eventData.Tickets.Cost;
+        eventData.PotentialRevenue = potentialRevenue;
+
+        new EventListingManager().Notify(eventData);
     }
 
     private decimal CalculatePotentialRevenue(CreateEventDto createEventDto)
