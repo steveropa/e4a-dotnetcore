@@ -6,59 +6,68 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BonfireEvents.Api.Controllers
 {
-  [ApiController]
-  [Route("event")]
-  public class EventController : ControllerBase
-  {
-  
-    [HttpPost]
-    public IActionResult Post(CreateEventDto eventData)
+    [ApiController]
+    [Route("event")]
+    public class EventController : ControllerBase
     {
-        if (eventData == null)
+
+        [HttpPost]
+        public IActionResult Post(CreateEventDto eventData)
         {
-            throw new ArgumentNullException("eventData is null");
-        }
-      if (eventData.Description == null) throw new ArgumentException();
-      if (eventData.Title == null) throw new ArgumentException();
-      
-      var organizer = new OrganizersService().GetOrganizerDetails( new AuthenticationService().GetCurrentUser());
+            if (eventData == null)
+            {
+                throw new ArgumentNullException("eventData is null");
+            }
 
-      eventData.Organizer = organizer.DisplayName;
+            ValidateEvent(eventData);
 
-      if (eventData.Starts > eventData.Ends)
-      {
-        throw new ArgumentException();
-      }
+            var organizer = new OrganizersService().GetOrganizerDetails(new AuthenticationService().GetCurrentUser());
 
-      if (eventData.Status == "Published")
-      {
-          NotifyOrganizer(eventData);
-      }
+            eventData.Organizer = organizer.DisplayName;
 
-      new DataAccessLayer().Save(eventData);
-      
-      return Ok();
-    }
+            if (eventData.Starts > eventData.Ends)
+            {
+                throw new ArgumentException();
+            }
 
-    private static void NotifyOrganizer(CreateEventDto eventData)
-    {
-        if (eventData.Starts < DateTime.Now)
-        {
-            throw new ArgumentException();
+            if (eventData.Status == "Published")
+            {
+                NotifyOrganizer(eventData);
+            }
+
+            new DataAccessLayer().Save(eventData);
+
+            return Ok();
         }
 
-        if (eventData.Capacity <= 0) throw new ArgumentException();
-        if (eventData.Tickets.Capacity != eventData.Capacity) throw new ArgumentException();
+        public bool ValidateEvent(CreateEventDto eventData)
+        {
+            bool isValidated = false;
+            if (eventData.Description == null) throw new ArgumentException();
+            if (eventData.Title == null) throw new ArgumentException();
 
-        decimal potentialRevenue = eventData.Tickets.Capacity * eventData.Tickets.Cost;
-        eventData.PotentialRevenue = potentialRevenue;
+            return isValidated;
+        }
 
-        new EventListingManager().Notify(eventData);
+        private static void NotifyOrganizer(CreateEventDto eventData)
+        {
+            if (eventData.Starts < DateTime.Now)
+            {
+                throw new ArgumentException();
+            }
+
+            if (eventData.Capacity <= 0) throw new ArgumentException();
+            if (eventData.Tickets.Capacity != eventData.Capacity) throw new ArgumentException();
+
+            decimal potentialRevenue = eventData.Tickets.Capacity * eventData.Tickets.Cost;
+            eventData.PotentialRevenue = potentialRevenue;
+
+            new EventListingManager().Notify(eventData);
+        }
+
+        private decimal CalculatePotentialRevenue(CreateEventDto createEventDto)
+        {
+            return (createEventDto.Tickets.Capacity * createEventDto.Tickets.Cost);
+        }
     }
-
-    private decimal CalculatePotentialRevenue(CreateEventDto createEventDto)
-    {
-      return (createEventDto.Tickets.Capacity * createEventDto.Tickets.Cost);
-    }
-  }
 }
