@@ -33,20 +33,5 @@ namespace BonfireEvents.Api.Tests
         }
        
     }
-
-    [Fact]
-    public void ValidateEventReturnsTrueIfEventIsCorrect()
-    {
-        var subject = new EventController();
-        CreateEventDto eventDto = new CreateEventDto();
-
-        eventDto.Description = "Event Description";
-        eventDto.Title = "Event Title";
-        eventDto.Starts = DateTime.Now;
-        eventDto.Ends = DateTime.Now.AddDays(1);
-
-        Assert.True(ValidateEvent(eventDto));
-
-    }
   }
 }
