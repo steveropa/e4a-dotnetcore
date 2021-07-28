@@ -12,36 +12,36 @@ namespace BonfireEvents.Api.Controllers
   {
 
     [HttpPost]
-    public IActionResult Post(CreateEventDto m)
+    public IActionResult Post(CreateEventDto eventData)
     {
-      if (m.Description == null) throw new ArgumentException();
-      if (m.Title == null) throw new ArgumentException();
+      if (eventData.Description == null) throw new ArgumentException();
+      if (eventData.Title == null) throw new ArgumentException();
       
       var organizer = new OrganizersService().GetOrganizerDetails( new AuthenticationService().GetCurrentUser());
 
-      m.Organizer = organizer.DisplayName;
+      eventData.Organizer = organizer.DisplayName;
 
-      if (m.Starts > m.Ends)
+      if (eventData.Starts > eventData.Ends)
       {
         throw new ArgumentException();
       }
 
-      if (m.Status == "Published")
+      if (eventData.Status == "Published")
       {
-        if (m.Starts < DateTime.Now) 
+        if (eventData.Starts < DateTime.Now) 
         {
           throw new ArgumentException();
         }
-        if (m.Capacity <= 0) throw new ArgumentException(); 
-        if (m.Tickets.Capacity != m.Capacity) throw new ArgumentException();
+        if (eventData.Capacity <= 0) throw new ArgumentException(); 
+        if (eventData.Tickets.Capacity != eventData.Capacity) throw new ArgumentException();
 
-        decimal pr = m.Tickets.Capacity * m.Tickets.Cost;
-        m.PotentialRevenue = pr;
+        decimal potentialRevenue = eventData.Tickets.Capacity * eventData.Tickets.Cost;
+        eventData.PotentialRevenue = potentialRevenue;
         
-        new EventListingManager().Notify(m);
+        new EventListingManager().Notify(eventData);
       }
 
-      new DataAccessLayer().Save(m);
+      new DataAccessLayer().Save(eventData);
       
       return Ok();
     }
