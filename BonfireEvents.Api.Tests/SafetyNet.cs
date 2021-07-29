@@ -27,11 +27,46 @@ namespace BonfireEvents.Api.Tests
         {
             subject.Post(eventDto);
         }
-        catch (ArgumentNullException error)
+        catch (Exception error)
         {
             Assert.IsType<ArgumentNullException>(error);
         }
        
+    }
+
+    [Fact]
+    public void MessageIfTitleIsMissing()
+    {
+        var subject = new EventController();
+        CreateEventDto eventDto = new CreateEventDto();
+        eventDto.Description = "Ok, its really CGI but still...";
+        try
+        {
+            subject.Post(eventDto);
+        }
+        catch (Exception e)
+        {
+            Assert.IsType<ArgumentException>(e);
+        }
+    }
+
+    [Fact]
+    public void MessageIfDescriptionIsMissing()
+    {
+        var subject = new EventController();
+        CreateEventDto eventDto = new CreateEventDto();
+        eventDto.Title = "Fiserv on Parade";
+        try
+        {
+            subject.Post(eventDto);
+        }
+        catch(Exception e)
+        {
+            Assert.IsType<ArgumentException>(e);
+
+        }
+
+
     }
   }
 }

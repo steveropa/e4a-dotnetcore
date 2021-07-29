@@ -17,18 +17,17 @@ namespace BonfireEvents.Api.Controllers
          AuthService = authenticationService;
 
       }
-  
-    [HttpPost]
+
+        public EventController()
+        {
+        }
+
+        [HttpPost]
     public IActionResult Post(CreateEventDto eventData)
     {
-        if (eventData == null)
-        {
-            throw new ArgumentNullException("eventData is null");
-        }
-      if (eventData.Description == null) throw new ArgumentException();
-      if (eventData.Title == null) throw new ArgumentException();
-      
-      var organizer = new OrganizersService().GetOrganizerDetails( new AuthenticationService().GetCurrentUser());
+        ValidateEventData(eventData);
+
+        var organizer = new OrganizersService().GetOrganizerDetails( new AuthenticationService().GetCurrentUser());
 
       eventData.Organizer = organizer.DisplayName;
 
@@ -45,6 +44,17 @@ namespace BonfireEvents.Api.Controllers
       new DataAccessLayer().Save(eventData);
       
       return Ok();
+    }
+
+    private static void ValidateEventData(CreateEventDto eventData)
+    {
+        if (eventData == null)
+        {
+            throw new ArgumentNullException("eventData is null");
+        }
+
+        if (eventData.Description == null) throw new ArgumentException();
+        if (eventData.Title == null) throw new ArgumentException();
     }
 
     private static void NotifyOrganizer(CreateEventDto eventData)
