@@ -31,10 +31,7 @@ namespace BonfireEvents.Api.Controllers
 
       eventData.Organizer = organizer.DisplayName;
 
-      if (eventData.Starts > eventData.Ends)
-      {
-        throw new ArgumentException();
-      }
+      
 
       if (eventData.Status == "Published")
       {
@@ -55,7 +52,11 @@ namespace BonfireEvents.Api.Controllers
 
         if (eventData.Description == null) throw new ArgumentException();
         if (eventData.Title == null) throw new ArgumentException();
-    }
+        if (eventData.Starts > eventData.Ends)
+        {
+            throw new ArgumentException();
+        }
+        }
 
     private static void NotifyOrganizer(CreateEventDto eventData)
     {
