@@ -10,6 +10,13 @@ namespace BonfireEvents.Api.Controllers
   [Route("event")]
   public class EventController : ControllerBase
   {
+      private IAuthenticationService AuthService;
+
+      EventController(IAuthenticationService authenticationService, IOrganizersService organizerService)
+      {
+         AuthService = authenticationService;
+
+      }
   
     [HttpPost]
     public IActionResult Post(CreateEventDto eventData)

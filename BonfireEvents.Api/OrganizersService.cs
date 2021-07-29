@@ -2,8 +2,13 @@ using System;
 
 namespace BonfireEvents.Api.Adapters
 {
-  public class OrganizersService 
-  {
+    public interface IOrganizersService
+    {
+        Organizer GetOrganizerDetails(string userId);
+    }
+
+    public class OrganizersService : IOrganizersService
+    {
     public Organizer GetOrganizerDetails(string userId)
     {
       throw new ServiceNotFoundException();
